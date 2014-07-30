@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html manifest="offline.manifest">
+	<head>
+		<meta charset="utf-8">
+		
+		<title></title>
+		<link rel="stylesheet" href="css/jquery.mobile.min.css" />
+		<script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="js/jquery.mobile.min.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.underscorejs.underscore/underscore.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere/bc.js"></script>
+		<script type="text/javascript" charset="utf-8" src="js/index.js"></script>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script>
+			$(function(){
+				app.initialize();
+			});
+			
+		</script>
+	</head>
+	<body>
+		<div id="hearder">
+				<h1>JUMABLEPeripheral</h1>
+		</div>
+		<div>
+			<input type="text" id="youWrite" value="">
+			<a id="write" href="javascript:void(0)" onclick="app.write()" data-role="button" style="clear:both; text-align:center;">Write!</a>
+		</div>
+		<div>
+		<a id="read" href="javascript:void(0)" onclick="app.read()" data-role="button" style="clear:both; text-align:center;">read!</a>
+		<div id="charactisticArea"></div>
+		<a id="subcribe" href="javascript:void(0)" onclick="app.subscribe()" data-role="button" style="clear:both; text-align:center;">subscibe!</a>
+		<div id="subscribeArea"></div>
+		</div>
+		<div>
+		<a id="unsubscribe" href="javascript:void(0)" onclick="app.unsubscribe()" data-role="button" style="clear:both; text-align:center;">unsubscribe!</a>
+		</div>
+	</body>
+</html>

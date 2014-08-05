@@ -15,7 +15,8 @@
 */
 
 var app = {
-	device : {},
+
+	device:{},
     // Application Constructor
     initialize: function() {
         app.bindCordovaEvents();
@@ -28,21 +29,25 @@ var app = {
     
 	onDeviceReady : function(){
 		var BC = window.BC = cordova.require("org.bcsphere.bcjs");
+		//navigator.camera = cordova.require("org.apache.cordova.camera.camera");
+		
 	},
 	
 	onBCReady : function(){
+		//document.addEventListener("newDevice",app.newDevice,false)
 		app.device = new BC.Device({deviceAddress:DEVICEADDRESS,type:DEVICETYPE});
 	},
-	
+
 	write : function(){
-		//var device = new BC.Device({deviceAddress:"78:C5:E5:99:26:54",type:"BLE"});
+		
+		//var device = new BC.Device({deviceAddress:"78:C5:E5:99:26:37",type:"BLE"});
 		app.device.connect(function(){
 			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID("fff0")[0];
+				var service = app.device.getServiceByUUID("fffa")[0];
 				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID("fff1")[0];
+					var character = service.getCharacteristicByUUID("ff00")[0];
 					var text=document.getElementById("youWrite").value;
-					character.write("ASCII",text,function(data){
+					character.write("Hex",text,function(data){
 						alert(JSON.stringify(data));
 					},function(){
 						alert("write error!");
@@ -58,15 +63,14 @@ var app = {
 		});
 	},
 	read : function(){
-		
 		app.device.connect(function(){
 			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID("fff0")[0];
+				var service = app.device.getServiceByUUID("fffa")[0];
 				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID("fff1")[0];
+					var character = service.getCharacteristicByUUID("ff00")[0];
 					character.read(function(data){
 						alert(JSON.stringify(data));
-						document.getElementById("charactisticArea").innerHTML=JSON.stringify(data.value.getASCIIString());
+						document.getElementById("charactisticArea").innerHTML=JSON.stringify(data.value.getHexString());
 						alert(JSON.stringify(data));
 					},function(){
 						alert("read error!");
@@ -82,15 +86,13 @@ var app = {
 		});
 	},
 	subscribe : function(){
+		
 		app.device.connect(function(){
 			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID("fff0")[0];
+				var service = app.device.getServiceByUUID("fffa")[0];
 				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID("fff7")[0];					
-					character.subscribe(function(data){
-						alert("subscribe success");
-						document.getElementById("subscribeArea").innerHTML=JSON.stringify(data);
-					});
+					var character = service.getCharacteristicByUUID("ff01")[0];					
+					character.subscribe(app.notify);
 			},function(){
 					alert("discoverCharacteristics error!");
 				});
@@ -101,13 +103,27 @@ var app = {
 			alert("connnect error!");
 		});
 	},
+	notify : function(data){
+		alert("subscribu success");
+		var value = data.value.getHexString();
+		alert(value);
+		if(value == "01"){
+			document.getElementById("subscribeArea").innerHTML=value;
+			alert("准备调照相机");
+			navigator.camera.getPicture(null,null,null);
+		}else if(value == "02"){
+			document.getElementById("subscribeArea").innerHTML=value;
+			alert("准备调摄像头");
+		}else{
+			alert("get nothing!!");
+		}
+	},
 	unsubscribe : function(){
-		
 		app.device.connect(function(){
 			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID("fff0")[0];
+				var service = app.device.getServiceByUUID("fffa")[0];
 				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID("fff7")[0];					
+					var character = service.getCharacteristicByUUID("ff01")[0];					
 					character.unsubscribe(function(data){
 						alert("unsubscribe success");					
 					},function(){

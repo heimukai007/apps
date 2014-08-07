@@ -4,7 +4,9 @@
 		<meta charset="utf-8">
 		
 		<title></title>
+
 		<link rel="stylesheet" href="css/jquery.mobile.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/bcstyle.css" />
 		<script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" charset="utf-8" src="js/jquery.mobile.min.js"></script>
 		<script type="text/javascript" charset="utf-8" src="http://115.29.149.19:3000/framework/org.apache.cordova.camera/www/Camera.js"></script>
@@ -21,22 +23,24 @@
 			
 		</script>
 	</head>
-	<body>
-		<div id="hearder">
+	<body >
+		<div id="bodyAll">
+		<div id="title">
 				<h1>Hornet</h1>
 		</div>
+		
 		<div>
 		    <a id="connect" href="javascript:void(0)" data-role="button" style="clear:both; text-align:center;">Adjust the lamp brightness</a>
 			<div>
 				<input type="text" id="youWrite" value="">
 				<a id="write" href="javascript:void(0)" onclick="app.write()" data-role="button" style="clear:both; text-align:center;">Write!</a>
 			</div>
-			<div>
+			<div >
 			<a id="read" href="javascript:void(0)" onclick="app.read()" data-role="button" style="clear:both; text-align:center;">read!</a>
 			<div id="charactisticArea"></div>
 			</div>
 		</div>
-		<div>
+		<div >
 			<a id="connect" href="javascript:void(0)" data-role="button" style="clear:both; text-align:center;">take picture</a>
 			<div>
 				<a id="subcribe" href="javascript:void(0)" onclick="app.subscribe()" data-role="button" style="clear:both; text-align:center;">subscibe!</a>
@@ -46,5 +50,6 @@
 			<a id="unsubscribe" href="javascript:void(0)" onclick="app.unsubscribe()" data-role="button" style="clear:both; text-align:center;">unsubscribe!</a>
 			</div>
 		</div>
+	</div>
 	</body>
 </html>

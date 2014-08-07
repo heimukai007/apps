@@ -16,6 +16,21 @@
 
 var app = {
 	device : {},
+	service = ["1800","1801","180a","aa00","aa10","aa20","aa30","aa40","aa50","ffeo","aa60","ccc0","ffc0"],
+	service[0]=["2a00","2a01","2a02","2a03","2a04"],
+	service[1]=["2a05"],
+	service[2]=["2a23","2a24","2a25","2a26","2a27","2a28","2a29","2a2a","2a50"],
+	service[3]=["aa01","aa02"],
+	service[4]=["aa11","aa12","aa13"],
+	service[5]=["aa21","aa22"],
+	sercice[6]=["aa31","aa32","aa33"],
+	service[7]=["aa41","aa42","aa43"],
+	service[8]=["aa51","aa52"],
+	service[9]=["ffe1"],
+	service[10]=["aa61","aa62"],
+	service[11]=["ccc1","ccc2","ccc3"],
+	service[12]=["ffc1","ffc2"],
+
     // Application Constructor
     initialize: function() {
         app.bindCordovaEvents();
@@ -35,6 +50,7 @@ var app = {
 	},
 	
 	write : function(){
+		alert("$"+service[0]+service[0][0]+"$");
 		//var device = new BC.Device({deviceAddress:"78:C5:E5:99:26:54",type:"BLE"});
 		app.device.connect(function(){
 			app.device.discoverServices(function(){

@@ -15,22 +15,8 @@
 */
 
 var app = {
-	device : {},
-	service = ["1800","1801","180a","aa00","aa10","aa20","aa30","aa40","aa50","ffeo","aa60","ccc0","ffc0"],
-	service[0]=["2a00","2a01","2a02","2a03","2a04"],
-	service[1]=["2a05"],
-	service[2]=["2a23","2a24","2a25","2a26","2a27","2a28","2a29","2a2a","2a50"],
-	service[3]=["aa01","aa02"],
-	service[4]=["aa11","aa12","aa13"],
-	service[5]=["aa21","aa22"],
-	sercice[6]=["aa31","aa32","aa33"],
-	service[7]=["aa41","aa42","aa43"],
-	service[8]=["aa51","aa52"],
-	service[9]=["ffe1"],
-	service[10]=["aa61","aa62"],
-	service[11]=["ccc1","ccc2","ccc3"],
-	service[12]=["ffc1","ffc2"],
 
+	device:{},
     // Application Constructor
     initialize: function() {
         app.bindCordovaEvents();
@@ -43,22 +29,25 @@ var app = {
     
 	onDeviceReady : function(){
 		var BC = window.BC = cordova.require("org.bcsphere.bcjs");
+		//navigator.camera = cordova.require("org.apache.cordova.camera.camera");
+		
 	},
 	
 	onBCReady : function(){
+		//document.addEventListener("newDevice",app.newDevice,false)
 		app.device = new BC.Device({deviceAddress:DEVICEADDRESS,type:DEVICETYPE});
 	},
-	
+
 	write : function(){
-		alert("$"+service[0]+service[0][0]+"$");
-		//var device = new BC.Device({deviceAddress:"78:C5:E5:99:26:54",type:"BLE"});
+		
+		//var device = new BC.Device({deviceAddress:"78:C5:E5:99:26:37",type:"BLE"});
 		app.device.connect(function(){
 			app.device.discoverServices(function(){
 				var service = app.device.getServiceByUUID("fff0")[0];
 				service.discoverCharacteristics(function(){
 					var character = service.getCharacteristicByUUID("fff1")[0];
 					var text=document.getElementById("youWrite").value;
-					character.write("ASCII",text,function(data){
+					character.write("Hex",text,function(data){
 						alert(JSON.stringify(data));
 					},function(){
 						alert("write error!");
@@ -74,7 +63,6 @@ var app = {
 		});
 	},
 	read : function(){
-		
 		app.device.connect(function(){
 			app.device.discoverServices(function(){
 				var service = app.device.getServiceByUUID("fff0")[0];
@@ -82,7 +70,7 @@ var app = {
 					var character = service.getCharacteristicByUUID("fff1")[0];
 					character.read(function(data){
 						alert(JSON.stringify(data));
-						document.getElementById("charactisticArea").innerHTML=JSON.stringify(data.value.getASCIIString());
+						document.getElementById("charactisticArea").innerHTML=JSON.stringify(data.value.getHexString());
 						alert(JSON.stringify(data));
 					},function(){
 						alert("read error!");
@@ -98,13 +86,14 @@ var app = {
 		});
 	},
 	subscribe : function(){
+		
 		app.device.connect(function(){
 			app.device.discoverServices(function(){
 				var service = app.device.getServiceByUUID("fff0")[0];
 				service.discoverCharacteristics(function(){
 					var character = service.getCharacteristicByUUID("fff7")[0];					
 					character.subscribe(function(data){
-						alert("subscribe success");
+						alert(JSON.stringify(data));
 						document.getElementById("subscribeArea").innerHTML=JSON.stringify(data);
 					});
 			},function(){
@@ -117,8 +106,8 @@ var app = {
 			alert("connnect error!");
 		});
 	},
+	
 	unsubscribe : function(){
-		
 		app.device.connect(function(){
 			app.device.discoverServices(function(){
 				var service = app.device.getServiceByUUID("fff0")[0];

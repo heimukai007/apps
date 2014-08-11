@@ -45,7 +45,7 @@ var app = {
 			app.device.discoverServices(function(){
 				var service = app.device.getServiceByUUID("fff0")[0];
 				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID("fff1")[0];
+					var character = service.getCharacteristicByUUID("fff6")[0];
 					var text=document.getElementById("youWrite").value;
 					character.write("Hex",text,function(data){
 						alert(JSON.stringify(data));
@@ -67,7 +67,7 @@ var app = {
 			app.device.discoverServices(function(){
 				var service = app.device.getServiceByUUID("fff0")[0];
 				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID("fff1")[0];
+					var character = service.getCharacteristicByUUID("fff6")[0];
 					character.read(function(data){
 						alert(JSON.stringify(data));
 						document.getElementById("charactisticArea").innerHTML=JSON.stringify(data.value.getHexString());

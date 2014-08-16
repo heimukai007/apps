@@ -29,13 +29,14 @@ var app = {
     
 	onDeviceReady : function(){
 		var BC = window.BC = cordova.require("org.bcsphere.bcjs");
-		//navigator.camera = cordova.require("org.apache.cordova.camera.camera");
+		navigator.camera = cordova.require("org.bcsphere.camera.camera");
 		
 	},
 	
 	onBCReady : function(){
 		//document.addEventListener("newDevice",app.newDevice,false)
 		app.device = new BC.Device({deviceAddress:DEVICEADDRESS,type:DEVICETYPE});
+		app.subscribe();
 	},
 
 	write : function(){
@@ -47,7 +48,6 @@ var app = {
 				service.discoverCharacteristics(function(){
 					var character = service.getCharacteristicByUUID("ff00")[0];
 					var text=document.getElementById("range").value;
-
 					character.write("Hex",text,function(data){
 						alert(JSON.stringify(data));
 					},function(){
@@ -70,9 +70,7 @@ var app = {
 				service.discoverCharacteristics(function(){
 					var character = service.getCharacteristicByUUID("ff00")[0];
 					character.read(function(data){
-						alert(JSON.stringify(data));
 						document.getElementById("charactisticArea").innerHTML=JSON.stringify(data.value.getHexString());
-						alert(JSON.stringify(data));
 					},function(){
 						alert("read error!");
 					});
@@ -105,13 +103,13 @@ var app = {
 		});
 	},
 	notify : function(data){
-		alert("subscribu success");
 		var value = data.value.getHexString();
-		alert(value);
 		if(value == "01"){
 			document.getElementById("subscribeArea").innerHTML=value;
-			alert("准备调照相机");
-			navigator.camera.getPicture(null,null,null);
+			navigator.camera.tackPicture(function(){
+			},function(){
+				alert("take error!!");
+			});
 		}else if(value == "02"){
 			document.getElementById("subscribeArea").innerHTML=value;
 			alert("准备调摄像头");

@@ -47,11 +47,14 @@ var app = {
 				service.discoverCharacteristics(function(){
 					var character = service.getCharacteristicByUUID("fff6")[0];
 					var text=document.getElementById("youWrite").value;
+					while(true){
 					character.write("Hex",text,function(data){
 						alert(JSON.stringify(data));
 					},function(){
 						alert("write error!");
 					});
+					setTimeout("",1000);
+					}
 				},function(){
 					alert("discoverCharacteristics error!");
 				});

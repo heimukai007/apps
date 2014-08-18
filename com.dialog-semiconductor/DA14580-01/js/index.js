@@ -48,7 +48,7 @@ var app = {
 		}
 	},
 
-	write : function(){
+	send : function(){
 		if(app.timer!=null){
 			clearInterval(timer);
 			app.timer=null;
@@ -63,7 +63,7 @@ var app = {
 				service.discoverCharacteristics(function(){
 					var character = service.getCharacteristicByUUID("ffa1")[0];
 					var dataType="ASCII";
-					tag1=document.getElementById("charType1").checked;
+					tag1=document.getElementById("Hex2").checked;
 					tag2=document.getElementById("cycleSend").checked;
 					var text1=document.getElementById("youWrite").value;
 					text1=text1.replace(/\s*/g,"");
@@ -151,7 +151,7 @@ var app = {
 				service.discoverCharacteristics(function(){
 					var character = service.getCharacteristicByUUID("ffa1")[0];					
 					character.subscribe(function(data){
-						tag=document.getElementById("charType1").checked;
+						tag=document.getElementById("Hex1").checked;
 						var text=document.getElementById("showData").value;
 						if(tag){
 							document.getElementById("showData").innerHTML=text+data.value.getHexString()+"\n";

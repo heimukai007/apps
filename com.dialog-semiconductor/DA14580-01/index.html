@@ -1,41 +1,106 @@
-<!DOCTYPE html>
-<html manifest="offline.manifest">
-	<head>
-		<meta charset="utf-8">		
-		<title></title>
-		<link rel="stylesheet" type="text/css" href="css/bcstyle.css">
-		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.underscorejs.underscore/underscore.js"></script>
-		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
-		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere/bc.js"></script>
-		<script type="text/javascript" charset="utf-8" src="js/index.js"></script>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script>		
-			window.load(app.initialize());	
-		</script>
-	</head>
-	<body>
-	<div id="bodyAll">
-		<div id="title">
-				<h1>DA14580-01</h1>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" type="text/css" href="css/clear.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.underscorejs.underscore/underscore.js"></script>
+<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
+<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere/bc.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>	
+	$(function(){
+		app.initialize();
+	});		
+	</script>
+</head>
+<body>
+<div class="body">
+	<div class="tab">
+		<div class="tabContent selected">
+			<div class="inputInfo">
+				<textarea id="showData"></textarea>
+			</div>
+			<div class="btn">
+				<div class="radioBtn">
+					<span class="control">
+						<input type="radio" name="charType" id="ASCII1" checked="checked"><i class="active"></i><label for="ASCII">ASCII</label>
+					</span>
+					<span class="control">
+						<input type="radio" name="charType" id="Hex1"><i class="addLeft"></i><label for="HEX">Hexadecimal</label>
+					</span>
+				</div>
+				<div class="sendBtn">
+					<div class="send" onclick="app.clear()">clear</div>
+				</div>	
+				<div class="sendBtn">
+					<div class="send" onclick="app.unsubscribe()">stop recieve</div>
+				</div>
+				<div class="sendBtn">
+					<div class="send" onclick="app.subscribe()">start recieve</div>
+				</div>
+			</div>
 		</div>
-		<div class="place">
-			<!-- <input type="textarea" id="youWrite" value="" class="position"/> -->
-			<textarea id="youWrite" class="position"></textarea>
-			<p><input type="checkbox" class="position" id="charType1"/><span style="color:orange;">Sixteen hexadecimal send</span></p>
-			<p><input type="checkbox" class="position" id="cycleSend"/><span style="color:orange;">Cyclic transmission</span></p>
-			<p><input type="text" value="write time interval" onfocus="if(value=='write time interval'){value='';}" onblur="if(value==''){value='write time interval'}" id="interval"/></p>
-			<input type="button" value="send" class="position" onclick="app.write()" id="send"/>
-			<input type="button" value="stop cyclic transmission " class="position" onclick="app.stop()" id="stop"/>
+		<div class="tabContent ">
+			<div class="inputInfo">
+				<textarea></textarea>
+			</div>
+			<div class="btn">
+				<div class="radioBtn">
+					<span class="control">
+						<input type="radio" name="charType" id="ASCII2" checked="checked"><i class="active"></i><label for="ASCII">ASCII</label>
+					</span>
+					<span class="control">
+						<input type="radio" name="charType" id="Hex2"><i class="addLeft"></i><label for="HEX">Hexadecimal</label>
+					</span>
+				</div>
+				<div class="selectBtn">
+					<span class="control">
+						<input type="checkbox" name="charType" style="display:none"id="cycleSend"><i></i><span>cyclic sending</span>
+					</span>
+					<span class="sendInterval">
+						<span> interval</span>
+						<input type="text" class="default" id="interval">
+						<span>ms</span>
+					</span>
+				</div>
+				<div class="sendBtn">
+					<div class="send" onclick="app.send()">send</div>
+				</div>
+				<div class="sendBtn">
+					<div class="send" onclick="app.stop()">stop cyclic sending</div>
+				</div>		
+			</div>
 		</div>
-		<div>
-			<textarea id="showData" class="position"></textarea>
-			<p><input type="checkbox" class="position" id="charType1"/><span style="color:orange;">To sixteen hexadecimal display</span></p>
-			<input type="button" value="receive data" class="position" onclick="app.subscribe()" id="subscribe"/>
-			<input type="button" value="stop recieve" class="position" onclick="app.unsubscribe()" id="unsubscribe"/>
-			<input type="button" value="clear" class="position" onclick="app.clear()" id="clear"/>
-		</div>
-		<div>
-		<!-- <a id="read" href="javascript:void(0)" onclick="app.read()" data-role="button" style="clear:both; text-align:center;">read!</a>	 -->
-		</div>
-	</body>
-</html>
+	</div>
+</div>
+<ul class="tabOption clearfix">
+	<li class="selectedLi">RX</li>
+	<li class="defaultLi">TX</li>
+</ul>
+</body>
+</html> 
+<script type="text/javascript">
+$(".tabOption>li").click(function(){
+	$(this).removeClass("defaultLi").addClass("selectedLi").siblings().removeClass("selectedLi").addClass("defaultLi");
+	var nIndex=$(this).index();
+	$(".tab>.tabContent").removeClass("selected").eq(nIndex).addClass("selected");
+})
+$(".radioBtn>.control").click(function(){
+	$(this).siblings().children("input").attr("checked","");
+	$(this).children("input").attr("checked","checked");
+	$(this).siblings().children("i").removeClass("active")
+	$(this).children("i").addClass("active");
+})
+$(".selectBtn>.control").toggle(function(){
+	$(this).children("input").attr("checked","checked");
+	$(this).children("i").css({"background":"url('img/checked.png')","background-size":"100% 100%"});
+	$(this).siblings(".sendInterval").addClass("active");
+},function(){
+	$(this).children("input").attr("checked","");
+	$(this).children("i").css({"background":"url('img/check.png')","background-size":"100% 100%"});
+	$(this).siblings(".sendInterval").removeClass("active");
+})
+</script>

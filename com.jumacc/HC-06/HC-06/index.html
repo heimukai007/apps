@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html manifest="offline.manifest">
+	<head>
+		<meta charset="utf-8">
+		
+		<title></title>
+
+		<link rel="stylesheet" href="css/jquery.mobile.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/bcstyle.css" />
+		<script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="js/jquery.mobile.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="http://115.29.149.19:3000/framework/org.apache.cordova.camera/www/Camera.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.underscorejs.underscore/underscore.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
+		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere/bc.js"></script>
+		<script type="text/javascript" charset="utf-8" src="js/index.js"></script>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script>
+			$(function(){
+				app.initialize();
+			});
+			
+		</script>
+	</head>
+	<body >
+		<div id="bodyAll">
+			<div id="title">
+					<h1>箫箫的小车</h1>
+			</div>
+			<div class="location">
+				<div id="up" touchstart="app.ONA()"touchend="app.ONF"><img src="img/up.png" ></div>
+				<div id="left" touchstart="app.ONC()"touchend="app.ONF"><img src="img/left.png" ></div>
+				<div id="center" onclick="app.ONF()"><img src="img/center.png"></div>
+				<div id="right" touchstart="app.OND()"touchend="app.ONF"><img src="img/right.png"></div>
+				<div id="down" touchstart="app.ONB()"touchend="app.ONF"><img src="img/down.png"></div>
+			</div>
+			<div class="location">
+				<ul>
+					<li>
+						<a href="javascript:void(0)" onclick="app.ON1()">1</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" onclick="app.ON2()">2</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" onclick="app.ON3()">3</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" onclick="app.ON4()">4</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" onclick="app.ON5()">5</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" onclick="app.ON6()">6</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" onclick="app.ON7()">7</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" onclick="app.ON8()">8</a>
+					</li>
+					<li>
+						<a href="javascript:void(0)" onclick="app.ON9()">9</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>

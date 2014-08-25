@@ -85,7 +85,7 @@ var app = {
 						check=checkNum.toString(16);
 					}
 					if(tag1){
-						dataType="Hex";
+						dataType="HEX";
 						if(length<16){
 							length="0"+length.toString(16);
 							
@@ -94,10 +94,7 @@ var app = {
 						}
 					}
 					if(!tag2){
-						if(app.timer!=null){
-							clearInterval(app.timer);
-							return;
-						}
+						app.stopSend();
 						text1=length+text1+check;
 						character.write(dataType,text1,function(data){
 
@@ -105,32 +102,7 @@ var app = {
 							alert("write error!");
 						});
 					}else{
-						var interval=document.getElementById("interval").value;
-						if(interval=="write time interval"){
-							interval=1000;
-						}						
-						app.timer=setInterval(function(){
-							var text=document.getElementById("youWrite").value;
-							text=text.replace(/\s*/g,"");
-							var textLength=text.length;
-							if(textLength %2!=0){
-								text="0"+text;
-							}
-							var j=app.numID;
-							if(j<16){
-								j=j.toString(16);
-								j="0"+j;
-							}else{
-								j=j.toString(16);
-							}
-							text=j+length+text+check;
-							
-							character.write(dataType,text,function(data){
-							},function(){
-								alert("write error!");
-							});
-							app.numID=app.numID+1;
-						},interval);
+						app.startSend(character);
 					}
 				},function(){
 					alert("discoverCharacteristics error!");
@@ -141,6 +113,61 @@ var app = {
 		},function(){
 			alert("connnect error!");
 		});
+	},
+
+	startSend: function(character){
+		var interval=document.getElementById("interval").value;
+		if(interval=="write time interval"){
+			interval=1000;
+		}					
+		app.timer=setInterval(function(){
+			var text=document.getElementById("youWrite").value;
+			var tag1=document.getElementById("Hex2").checked;
+			var check=0;
+			text=text.replace(/\s*/g,"");
+			var dataType="ASCII";
+			if(tag1){
+				dataType="HEX";
+			}
+			var textLength=text.length;
+			var length=Math.floor((textLength+1)/2);
+			if(textLength %2!=0){
+				text="0"+text;
+			}
+
+			var sum = 0;
+			for(var j=0;j<text.length;j=j+1){
+				var str = text.substring(j,j+1);
+				sum=sum+str.charCodeAt();
+			}
+			var checkNum=(sum%256);
+			if(checkNum<16){
+				check="0"+checkNum.toString(16);
+			}else{
+				check=checkNum.toString(16);
+			}
+
+			var j=app.numID;
+			if(j<16){
+				j=j.toString(16);
+				j="0"+j;
+			}else{
+				j=j.toString(16);
+			}
+			text=j+length+text+check;
+			
+			character.write(dataType,text,function(data){
+			},function(){
+				alert("write error!");
+			});
+			app.numID=app.numID+1;
+		},interval);
+	},
+
+	stopSend: function(){
+		if(app.timer!=null){
+			clearInterval(app.timer);
+		}
 	},
 
 	subscribe : function(){
@@ -157,6 +184,14 @@ var app = {
 							document.getElementById("showData").innerHTML=text+data.value.getHexString()+"\n";
 						}else{
 							document.getElementById("showData").innerHTML=text+data.value.getASCIIString()+"\n";
+						}
+						var tag2=document.getElementById("cycleSend").checked;
+						if(tag2){
+							if(data.value.getHexString() == '01'){
+								app.startSend(character);
+							}else if(data.value.getHexString() == '02'){
+								app.stopSend();
+							}
 						}
 					});
 

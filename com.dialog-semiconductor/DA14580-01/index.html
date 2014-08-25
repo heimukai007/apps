@@ -13,7 +13,7 @@
 <script>	
 	$(function(){
 		app.initialize();
-	});		
+	});
 	</script>
 </head>
 <body>
@@ -29,23 +29,23 @@
 						<input type="radio" name="charType" id="ASCII1" checked="checked"><i class="active"></i><label for="ASCII">ASCII</label>
 					</span>
 					<span class="control">
-						<input type="radio" name="charType" id="Hex1"><i class="addLeft"></i><label for="HEX">Hexadecimal</label>
+						<input type="radio" name="charType" id="Hex1"><i class="addLeft"></i><label for="HEX">Hex</label>
 					</span>
 				</div>
 				<div class="sendBtn">
 					<div class="send" onclick="app.clear()">clear</div>
 				</div>	
 				<div class="sendBtn">
-					<div class="send" onclick="app.unsubscribe()">stop recieve</div>
+					<div class="send" onclick="app.unsubscribe()">stop</div>
 				</div>
 				<div class="sendBtn">
-					<div class="send" onclick="app.subscribe()">start recieve</div>
+					<div class="send" onclick="app.subscribe()">start</div>
 				</div>
 			</div>
 		</div>
 		<div class="tabContent ">
 			<div class="inputInfo">
-				<textarea></textarea>
+				<textarea id="youWrite"></textarea>
 			</div>
 			<div class="btn">
 				<div class="radioBtn">
@@ -53,7 +53,7 @@
 						<input type="radio" name="charType" id="ASCII2" checked="checked"><i class="active"></i><label for="ASCII">ASCII</label>
 					</span>
 					<span class="control">
-						<input type="radio" name="charType" id="Hex2"><i class="addLeft"></i><label for="HEX">Hexadecimal</label>
+						<input type="radio" name="charType" id="Hex2"><i class="addLeft"></i><label for="HEX">Hex</label>
 					</span>
 				</div>
 				<div class="selectBtn">

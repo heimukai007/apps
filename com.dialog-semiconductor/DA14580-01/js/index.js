@@ -38,7 +38,7 @@ var app = {
 	onBCReady : function(){
 		//document.addEventListener("newDevice",app.newDevice,false)
 		app.device = new BC.Device({deviceAddress:DEVICEADDRESS,type:DEVICETYPE});
-		app.subscribe();
+		//app.subscribe();
 	},
 	stop : function(){
 		if(app.timer!=null){
@@ -159,6 +159,13 @@ var app = {
 							document.getElementById("showData").innerHTML=text+data.value.getASCIIString()+"\n";
 						}
 					});
+
+					var character1 = service.getCharacteristicByUUID('ffa2')[0];
+					character1.write('Hex','01',function(data){
+						alert("write success");					
+					},function(){
+						alert("write error");
+					});
 			},function(){
 					alert("discoverCharacteristics error!");
 				});
@@ -181,7 +188,14 @@ var app = {
 					},function(){
 						alert("unsubscribe error");
 					});
-			},function(){
+
+					var character1 = service.getCharacteristicByUUID('ffa2')[0];
+					character1.write('Hex','02',function(data){
+						alert("write success");					
+					},function(){
+						alert("write error");
+					});
+				},function(){
 					alert("discoverCharacteristics error!");
 				});
 			},function(){

@@ -31,8 +31,10 @@ var app = {
     
 	onDeviceReady : function(){
 		var BC = window.BC = cordova.require("org.bcsphere.bcjs");
-		//navigator.camera = cordova.require("org.apache.cordova.camera.camera");
-		
+		var ProgressEvent = window.ProgressEvent = cordova.require('org.apache.cordova.file.ProgressEvent');
+		var LocalFileSystem = window.LocalFileSystem = cordova.require('org.apache.cordova.file.LocalFileSystem');
+		var requestFileSystem = window.requestFileSystem = cordova.require('org.apache.cordova.file.requestFileSystem');
+		requestFileSystem(LocalFileSystem.PERSISTENT, 0, app.gotFS, app.fail);
 	},
 	
 	onBCReady : function(){
@@ -40,6 +42,44 @@ var app = {
 		app.device = new BC.Device({deviceAddress:DEVICEADDRESS,type:DEVICETYPE});
 		//app.subscribe();
 	},
+
+	gotFS:function(fileSystem){
+        newFile = fileSystem.root.getDirectory("bcsphere", {create : true,exclusive : false}, app.writerFile, app.fail);
+    },
+
+
+    writerFile : function(newFile){
+    	var fileName = 'DA14580-01_';
+    	var date = new Date();
+    	fileName+=date.getFullYear();
+		fileName+=date.getMonth()>9?date.getMonth().toString():'0' + date.getMonth();
+		fileName+=date.getDate()>9?date.getDate().toString():'0' + date.getDate();
+		fileName+=date.getHours()>9?date.getHours().toString():'0' + date.getHours();
+		fileName+=date.getMinutes()>9?date.getMinutes().toString():'0' + date.getMinutes();
+		fileName+=date.getSeconds()>9?date.getSeconds().toString():'0' + date.getSeconds();
+		fileName+='.txt';
+        newFile.getFile(fileName, {create : true,exclusive : false}, app.gotFileEntry, app.fail);  
+    },
+
+    gotFileEntry : function(fileEntry){
+        fileEntry.createWriter(app.gotFileWriter, app.fail);
+    },
+
+    gotFileWriter: function(writer) {  
+        writer.onwrite = function(evt) {  
+            console.log("write success");  
+        };
+        app.writer = writer;
+    },
+
+    write : function(mes){
+        app.writer.seek(app.writer.length);
+        app.writer.write(new Date()+"   "+mes+"\r\n");
+    },
+
+    fail : function(error){
+        console.log("Failed to retrieve file:" + error.code);  
+    },
 	stop : function(){
 		if(app.timer!=null){
 			clearInterval(app.timer);
@@ -182,8 +222,10 @@ var app = {
 						var text=document.getElementById("showData").value;
 						if(tag){
 							document.getElementById("showData").innerHTML=text+data.value.getHexString()+"\n";
+							app.write(data.value.getHexString());
 						}else{
 							document.getElementById("showData").innerHTML=text+data.value.getASCIIString()+"\n";
+							app.write(data.value.getASCIIString());
 						}
 						var tag2=document.getElementById("cycleSend").checked;
 						if(tag2){

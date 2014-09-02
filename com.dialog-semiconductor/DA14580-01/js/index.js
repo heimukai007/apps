@@ -52,7 +52,7 @@ var app = {
     	var fileName = 'DA14580-01_';
     	var date = new Date();
     	fileName+=date.getFullYear();
-		fileName+=date.getMonth()>9?date.getMonth().toString():'0' + date.getMonth();
+		fileName+=parseInt(date.getMonth()+1)>9?parseInt(date.getMonth()+1).toString():'0' + parseInt(date.getMonth()+1);
 		fileName+=date.getDate()>9?date.getDate().toString():'0' + date.getDate();
 		fileName+=date.getHours()>9?date.getHours().toString():'0' + date.getHours();
 		fileName+=date.getMinutes()>9?date.getMinutes().toString():'0' + date.getMinutes();
@@ -157,8 +157,11 @@ var app = {
 
 	startSend: function(character){
 		var interval=document.getElementById("interval").value;
-		if(interval=="write time interval"){
-			interval=1000;
+		if(interval==""){
+			interval = 1000;
+		}
+		else{
+			interval = parseInt(interval);
 		}					
 		app.timer=setInterval(function(){
 			var text=document.getElementById("youWrite").value;

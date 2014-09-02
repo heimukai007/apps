@@ -96,14 +96,15 @@
 			</div>
 		</div>
 	</div>
+	<ul class="tabOption clearfix">
+            <li class="selectedLi">RX</li>
+            <li class="defaultLi">TX</li>
+        </ul>
 </div>
-<ul class="tabOption clearfix">
-	<li class="selectedLi">RX</li>
-	<li class="defaultLi">TX</li>
-</ul>
 </body>
 </html> 
 <script type="text/javascript">
+
 $(".tabOption>li").click(function(){
 	$(this).removeClass("defaultLi").addClass("selectedLi").siblings().removeClass("selectedLi").addClass("defaultLi");
 	var nIndex=$(this).index();
@@ -117,7 +118,9 @@ $(".radioBtn>.control").click(function(){
 })
 $(".selectBtn>.control").toggle(function(){
 	$(this).children("input").attr("checked","checked");
+//	alert($(this).children("input"));
 	$(this).children("i").css({"background":"url('img/checked.png')","background-size":"100% 100%"});
+//	alert($(this).children("i"));
 	$(this).siblings(".sendInterval").addClass("active");
 },function(){
 	$(this).children("input").attr("checked","");

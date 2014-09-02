@@ -241,6 +241,13 @@ var app = {
 					});
 
 					var character1 = service.getCharacteristicByUUID('ffa2')[0];
+					character1.subscribe(function(data){
+						if(data.value.getHexString() == '01'){
+								app.startSend(character);
+							}else if(data.value.getHexString() == '02'){
+								app.stopSend();
+							}
+					});
 					character1.write('Hex','01',function(data){
 						alert("write success");					
 					},function(){

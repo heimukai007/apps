@@ -106,7 +106,7 @@ var app = {
 		var value = data.value.getHexString();
 		if(value == "01"){
 			document.getElementById("subscribeArea").innerHTML=value;
-			navigator.camera.tackPicture(function(){
+			navigator.camera.takePicture(function(){
 			},function(){
 				alert("take error!!");
 			});

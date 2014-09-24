@@ -49,7 +49,6 @@ var app = {
 					var character = service.getCharacteristicByUUID("ff00")[0];
 					var text=document.getElementById("range").value;
 					character.write("Hex",text,function(data){
-						alert(JSON.stringify(data));
 					},function(){
 						alert("write error!");
 					});
@@ -104,14 +103,12 @@ var app = {
 	},
 	notify : function(data){
 		var value = data.value.getHexString();
-		if(value == "01"){
-			document.getElementById("subscribeArea").innerHTML=value;
-			navigator.camera.takePicture(function(){
+		if(value == "01"){			
+			navigator.camera.tackPicture(function(){
 			},function(){
 				alert("take error!!");
 			});
-		}else if(value == "02"){
-			document.getElementById("subscribeArea").innerHTML=value;
+		}else if(value == "02"){	
 			alert("准备调摄像头");
 		}else{
 			alert("get nothing!!");

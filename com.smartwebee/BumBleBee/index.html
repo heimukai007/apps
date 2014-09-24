@@ -1,57 +1,64 @@
 <!DOCTYPE html>
-<html manifest="offline.manifest">
-	<head>
-		<meta charset="utf-8">
+<html>
+<head>
+	<title>Electronic L abel</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/clear.css">
+	<link rel="stylesheet" type="text/css" href="css/service.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript"src="http://115.29.149.19:3000/framework/org.bcsphere.camera/www/camera.js"></script>
+	<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.underscorejs.underscore/underscore.js"></script>
+	<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
+	<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere/bc.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script>
+		window.onload=function(){
+			ccx();
+		}
 		
-		<title></title>
-
-		<link rel="stylesheet" href="css/jquery.mobile.min.css" />
-		<link rel="stylesheet" type="text/css" href="css/bcstyle.css" />
-		<script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" charset="utf-8" src="js/jquery.mobile.min.js"></script>
-		<!-- http://115.29.149.19:3000/framework/org.bcsphere.camera/www/camera.js -->
-		<script type="text/javascript"src="http://115.29.149.19:3000/framework/org.bcsphere.camera/www/camera.js"></script>
-		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.underscorejs.underscore/underscore.js"></script>
-		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
-		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere/bc.js"></script>
-		<script type="text/javascript" charset="utf-8" src="js/index.js"></script>
+		function ccx(){
+			var range=document.getElementById("range");
+			range.onchange=function(){
+				document.getElementById("value").innerHTML=this.value;
+			}
+			
+		}
 		
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script>
+		
 			$(function(){
 				app.initialize();
 			});
 			
-		</script>
-		
-	</head>
-	<body >
-		<div id="bodyAll">
-		<div id="title">
-				<h1>Hornet</h1>
-		</div>
-		
-		<div>
-		    <a id="connect" href="javascript:void(0)" data-role="button" style="clear:both; text-align:center;">Adjust the lamp brightness</a>
-			<div>
-				<input id="range"  type="range" name="cssercom" min="0" max="100" >
-				<a id="write" href="javascript:void(0)" onclick="app.write()" data-role="button" style="clear:both; text-align:center;">adjust the brightness</a>
-			</div>
-			<div >
-			<a id="read" href="javascript:void(0)" onclick="app.read()" data-role="button" style="clear:both; text-align:center;">check the brightness</a>
-			<div id="charactisticArea"></div>
-			</div>
-		</div>
-		<div >
-			<a id="connect" href="javascript:void(0)" data-role="button" style="clear:both; text-align:center;">take picture</a>
-			<div>
-				<a id="subcribe" href="javascript:void(0)" onclick="app.subscribe()" data-role="button" style="clear:both; text-align:center;">subscibe!</a>
-				<div id="subscribeArea"></div>
-			</div>
-			<div>
-			<a id="unsubscribe" href="javascript:void(0)" onclick="app.unsubscribe()" data-role="button" style="clear:both; text-align:center;">unsubscribe!</a>
-			</div>
-		</div>
+	</script>
+</head>
+<body>
+	<div class="body">
+		<div class="clearBtn">
+			<div class="sub" >大黄蜂</div>
+		</div> 
+		 <div class="elec">
+		 	<div class="elec-title">
+		 		<span class="imgname">蓝牙灯</span><span class="sendBtn" onclick="app.write()">发送</span>
+		 	</div>
+		 	<div class="elec-img">
+		 		<img src="img/bulb.jpg">
+		 	</div>
+		 	<input id="range"  type="range" name="cssercom" min="0" max="64" >
+		 	<span class="sendBtn" id="value"></span>
+		 </div>
+		 <div class="elec addTop">
+		 	<div class="elec-title">
+		 		<span class="imgname">按键拍照</span><span class="stopBtn" onclick="app.unsubscribe()">关闭</span><span class="sendBtn" onclick="app.subscribe()">开启</span>
+		 	</div>
+		 	<div class="elec-img">
+		 		<img src="img/takePicture.jpg">
+		 	</div>
+		 </div>
+		 
+		 </div>
 	</div>
-	</body>
+</body>
+
 </html>

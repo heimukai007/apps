@@ -8,47 +8,103 @@
 		<link rel="stylesheet" type="text/css" href="css/bcstyle.css">
 		<script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" charset="utf-8" src="js/jquery.mobile.min.js"></script>
-		<!--<script type="text/javascript" charset="utf-8" src="http://115.29.149.19:3000/framework/org.apache.cordova.camera/www/Camera.js"></script>-->
 		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.underscorejs.underscore/underscore.js"></script>
 		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
 		<script type="text/javascript" src="http://115.29.149.19:3000/framework/org.bcsphere/bc.js"></script>
-		<script type="text/javascript" src="js/id.js"></script>
-		<script type="text/javascript" charset="utf-8" src="js/index.js"></script>
 		
+		<script type="text/javascript" charset="utf-8" src="js/index.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script>
 			$(function(){
 				app.initialize();
 			});
-			
 		</script>
 	</head>
+
 	<body>
-	<div id="bodyAll">
-		<div id="title">
-				<h1>sensorTag</h1>
-		</div>
-		<div>
-		    <a id="connect" href="javascript:void(0)" data-role="button" style="clear:both; text-align:center;">红外温度</a>
-			<!-- <div>
-				<input type="text" id="youWrite" value="">
-				<a id="write" href="javascript:void(0)" onclick="app.write()" data-role="button" style="clear:both; text-align:center;">Write!</a>
-			</div> -->
-			<div>
-			<a id="read" href="javascript:void(0)" onclick="app.read()" data-role="button" style="clear:both; text-align:center;">read!</a>
-			<div id="charactisticArea"></div>
+		<div id="bodyALL">
+			<div id="title">
+				<h1>Cheese</h1>
 			</div>
-		</div>
-		<div>
-			<a id="connect" href="javascript:void(0)" data-role="button" style="clear:both; text-align:center;">service2</a>
+
 			<div>
-				<a id="subcribe" href="javascript:void(0)" onclick="app.subscribe()" data-role="button" style="clear:both; text-align:center;">subscibe!</a>
-				<div id="subscribeArea"></div>
+				<a id="connect" href="javascript:void(0)" onclick="app.connect()" data-role="button" style="clear:both; text-align:center;">CONNECT!</a>
+				<a id="read" href="javascript:void(0)" onclick="app.read()" data-role="button" style="clear:both; text-align:center;">READ!</a>
+				
+				<ul>
+					<li><a><h3>Devices info:</h3></a>
+						<a><span id="Devices_info"style="color:blue;"><h3>NONE</h3></span></a>
+					</li>
+				</ul>
 			</div>
-			<div>
-			<a id="unsubscribe" href="javascript:void(0)" onclick="app.unsubscribe()" data-role="button" style="clear:both; text-align:center;">unsubscribe!</a>
-			</div>
+		</div>		
+
+		
+		<div >
+			<a id="subscribeT" href="javascript:void(0)" onclick="app.subscribeT()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Temperature!</a>
+			<a id="unsubscribeT" href="javascript:void(0)" onclick="app.unsubscribeT()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Temperature!</a>
+			<ul>
+			<li><a><h3>Temperature:</h3></a>
+				<a><span id="Temperature"style="color:blue;"><h3>NONE</h3></span></a>
+			</li>
+			</ul>
 		</div>
+
+		<div >
+			<a id="subscribeA" href="javascript:void(0)" onclick="app.subscribeA()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Accelerometer!</a>
+			<a id="unsubscribeA" href="javascript:void(0)" onclick="app.unsubscribeA()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Accelerometer!</a>
+			<ul>
+			<li><a><h3>Accelerometer:</h3></a>
+				<a><span id="Accelerometer"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			</ul>	
 		</div>
+
+		<div >
+			<a id="subscribeH" href="javascript:void(0)" onclick="app.subscribeH()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Humidity!</a>
+			<a id="unsubscribeH" href="javascript:void(0)" onclick="app.unsubscribeH()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Humidity!</a>
+			<ul>
+			<li><a><h3>Humidity:</h3></a>
+				<a><span id="Humidity"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			</ul>	
+		</div>
+
+		<div >
+			<a id="subscribeM" href="javascript:void(0)" onclick="app.subscribeM()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Magnetometer!</a>
+			<a id="unsubscribeM" href="javascript:void(0)" onclick="app.unsubscribeM()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Magnetometer!</a>
+			<ul>
+			<li><a><h3>Magnetometer:</h3></a>
+				<a><span id="Magnetometer"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			</ul>	
+		</div>
+
+		<div >
+			<a id="subscribeB" href="javascript:void(0)" onclick="app.subscribeB()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Barometer!</a>
+			<a id="unsubscribeB" href="javascript:void(0)" onclick="app.unsubscribeB()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Barometer!</a>
+			<ul>
+			<li><a><h3>Barometer:</h3></a>
+				<a><span id="Barometer"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			</ul>	
+		</div>
+
+		<div >
+			<a id="subscribeG" href="javascript:void(0)" onclick="app.subscribeG()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Gyroscope!</a>
+			<a id="unsubscribeG" href="javascript:void(0)" onclick="app.unsubscribeG()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Gyroscope!</a>
+			<ul>
+			<li><a><h3>Gyroscope:</h3></a>
+				<a><span id="Gyroscope"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			</ul>	
+		</div>			
+
+				<!--ul>	
+					<li><a><h3>Key state:</h3></a>
+						<a><span id="KeyState"style="color:purple;"><h3>NONE</h3></span></a>
+					</li>
+				</ul-->		
+
 	</body>
 </html>

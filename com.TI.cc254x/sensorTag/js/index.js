@@ -33,32 +33,63 @@ var app = {
 	
 	onBCReady : function(){
 		app.device = new BC.Device({deviceAddress:DEVICEADDRESS,type:DEVICETYPE});
-		// app.serviceID = [{0:"1800",1:["2a00","2a01","2a02","2a03","2a04"]},
+
+		//app.device = new BC.Device({deviceAddress:"BC:6A:29:AB:64:AB",type:"BLE"});
+	},
+
+
+//  app.serviceID = [{0:"1800",1:["2a00","2a01","2a02","2a03","2a04"]},
 		// 			 {0:"1801",1:["2a05"]},
-		// 			 {0:"180a",1:["2a23","2a24","2a25","2a26","2a27","2a28","2a29","2a2a","2a50"]},
-		// 			 {0:"aa00",1:["aa01","aa02"]},
-		// 			 {0:"aa10",1:["aa11","aa12","aa13"]},
-		// 			 {0:"aa20",1:["aa21","aa22"]},
-		// 			 {0:"aa30",1:["aa31","aa32","aa33"]},
-		// 			 {0:"aa40",1:["aa41","aa42","aa43"]},
-		// 			 {0:"aa50",1:["aa51","aa52"]},
-		// 			 {0:"ffeo",1:["ffe1"]},
-		// 			 {0:"aa60",1:["aa61","aa62"]},
+		// 			 {0:"180a",1:["2a23","2a24","2a25","2a26","2a27","2a28","2a29","2a2a","2a50"]},//device information: 2a23-ID
+		// 			 {0:"aa00",1:["aa01","aa02"]},//Temperature: aa01-data;aa02-config
+		// 			 {0:"aa10",1:["aa11","aa12","aa13"]},//Accelerometer: aa11-data;aa12-config;aa13-period
+		// 			 {0:"aa20",1:["aa21","aa22"]},//Humidity: aa21-data;aa22-config
+		// 			 {0:"aa30",1:["aa31","aa32","aa33"]},//Magnetometer: aa31-data;aa32-config;aa33-period
+		// 			 {0:"aa40",1:["aa41","aa42","aa43"]},//Barometer: aa41-data;aa42-config;aa43-cail
+		// 			 {0:"aa50",1:["aa51","aa52"]},//Gyroscope: aa51-data;aa52-config
+		// 			 {0:"ffeo",1:["ffe1"]},//key press state: 0x00,0x01,0x02,0x03
+		// 			 {0:"aa60",1:["aa61","aa62"]},//test data
 		// 			 {0:"ccc0",1:["ccc1","ccc2","ccc3"]},
 		// 			 {0:"ffc0",1:["ffc1","ffc2"]}];
-	},
-	
-	write : function(){
-		
-		//var device = new BC.Device({deviceAddress:"78:C5:E5:99:26:54",type:"BLE"});
+	connect : function(){
 		app.device.connect(function(){
+			alert("device:" + app.device.deviceAddress + "is connected successfully!");	
+		},function(){
+			alert("connect error!");
+		});
+	},	
+
+	read : function(){
+			
 			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID(address[0][0])[0];
+				var service = app.device.getServiceByUUID("180a")[0];
+				//alert("The Service UUID is" + service.uuid);
 				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID(address[0][1][3])[0];
-					var text=document.getElementById("youWrite").value;
-					character.write("Hex",text,function(data){
-						alert(JSON.stringify(data));
+					var character = service.getCharacteristicByUUID("2a23")[0];
+					character.read(function(data){
+						//alert(JSON.stringify(data.value.getASCIIString()));
+						document.getElementById("Devices_info").innerHTML=JSON.stringify(data.value.getHexString());
+					},function(){
+						alert("read error!");
+					});
+				},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+			});
+	},
+
+/*
+	connect : function(){
+		app.device.connect(function(){
+			alert("device:" + app.device.deviceAddress + "is connected successfully!");	
+			app.device.discoverServices(function(){
+				var service = app.device.getServiceByUUID("F000AA00-0451-4000-B000-000000000000")[0];
+				service.discoverCharacteristics(function(){
+					var character = service.getCharacteristicByUUID("F000AA02-0451-4000-B000-000000000000")[0];
+					character.write("Hex","01",function(data){
+						//alert(JSON.stringify(data));
 					},function(){
 						alert("write error!");
 					});
@@ -69,61 +100,40 @@ var app = {
 				alert("discoverServices error!");
 			});
 		},function(){
-			alert("connnect error!");
+			alert("connect error!");
 		});
 	},
-	read : function(){
-		
-		app.device.connect(function(){
-			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID(address[3][0])[0];
-				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID(address[3][1][0])[0];
-					character.read(function(data){
-						alert(JSON.stringify(data));
-						document.getElementById("charactisticArea").innerHTML=JSON.stringify(data);
+*/
+	subscribeT : function(){
+		app.device.discoverServices(function(){
+			var service = app.device.getServiceByUUID("F000AA00-0451-4000-B000-000000000000")[0];
+			service.discoverCharacteristics(function(){
+				var character1 = service.getCharacteristicByUUID("F000AA01-0451-4000-B000-000000000000")[0];	
+				var character2 = service.getCharacteristicByUUID("F000AA02-0451-4000-B000-000000000000")[0];
+				character2.write("Hex","01",function(data){
+						//alert(JSON.stringify(data));
 					},function(){
-						alert("read error!");
+						alert("write error!");
+					});
+				character1.subscribe(function(data){
+					//alert("subscribe success");
+					document.getElementById("Temperature").innerHTML=JSON.stringify(data.value.getHexString());
 					});
 				},function(){
 					alert("discoverCharacteristics error!");
 				});
 			},function(){
 				alert("discoverServices error!");
-			});
-		},function(){
-			alert("connnect error!");
 		});
 	},
-	subscribe : function(){
-		app.device.connect(function(){
+
+	unsubscribeT : function(){
 			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID(address[1][0])[0];
+				var service = app.device.getServiceByUUID("F000AA00-0451-4000-B000-000000000000")[0];
 				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID(address[1][1][0])[0];					
-					character.subscribe(function(data){
-						alert("subscribe success");
-						document.getElementById("subscribeArea").innerHTML=JSON.stringify(data);
-					});
-			},function(){
-					alert("discoverCharacteristics error!");
-				});
-			},function(){
-				alert("discoverServices error!");
-			});
-		},function(){
-			alert("connnect error!");
-		});
-	},
-	unsubscribe : function(){
-		
-		app.device.connect(function(){
-			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID(address[1][0])[0];
-				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID(address[1][1][0])[0];					
+					var character = service.getCharacteristicByUUID("F000AA01-0451-4000-B000-000000000000")[0];					
 					character.unsubscribe(function(data){
-						alert("unsubscribe success");					
+						//alert("unsubscribe success");					
 					},function(){
 						alert("unsubscribe error");
 					});
@@ -133,8 +143,233 @@ var app = {
 			},function(){
 				alert("discoverServices error!");
 			});
-		},function(){
-			alert("connnect error!");
+	},
+
+	subscribeA : function(){
+		app.device.discoverServices(function(){
+			var service = app.device.getServiceByUUID("F000AA10-0451-4000-B000-000000000000")[0];
+			service.discoverCharacteristics(function(){
+				var character1 = service.getCharacteristicByUUID("F000AA11-0451-4000-B000-000000000000")[0];	
+				var character2 = service.getCharacteristicByUUID("F000AA12-0451-4000-B000-000000000000")[0];
+				character2.write("Hex","01",function(data){
+						//alert(JSON.stringify(data));
+					},function(){
+						alert("write error!");
+					});
+				character1.subscribe(function(data){
+					//alert("subscribe success");
+					document.getElementById("Accelerometer").innerHTML=JSON.stringify(data.value.getHexString());
+					});
+				},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
 		});
 	},
+
+	unsubscribeA : function(){
+			app.device.discoverServices(function(){
+				var service = app.device.getServiceByUUID("F000AA10-0451-4000-B000-000000000000")[0];
+				service.discoverCharacteristics(function(){
+					var character = service.getCharacteristicByUUID("F000AA11-0451-4000-B000-000000000000")[0];					
+					character.unsubscribe(function(data){
+						//alert("unsubscribe success");					
+					},function(){
+						alert("unsubscribe error");
+					});
+			},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+			});
+	},
+
+	subscribeH : function(){
+		app.device.discoverServices(function(){
+			var service = app.device.getServiceByUUID("F000AA20-0451-4000-B000-000000000000")[0];
+			service.discoverCharacteristics(function(){
+				var character1 = service.getCharacteristicByUUID("F000AA21-0451-4000-B000-000000000000")[0];	
+				var character2 = service.getCharacteristicByUUID("F000AA22-0451-4000-B000-000000000000")[0];
+				character2.write("Hex","01",function(data){
+						//alert(JSON.stringify(data));
+					},function(){
+						alert("write error!");
+					});
+				character1.subscribe(function(data){
+					//alert("subscribe success");
+					document.getElementById("Accelerometer").innerHTML=JSON.stringify(data.value.getHexString());
+					});
+				},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+		});
+	},
+
+	unsubscribeH : function(){
+			app.device.discoverServices(function(){
+				var service = app.device.getServiceByUUID("F000AA20-0451-4000-B000-000000000000")[0];
+				service.discoverCharacteristics(function(){
+					var character = service.getCharacteristicByUUID("F000AA21-0451-4000-B000-000000000000")[0];					
+					character.unsubscribe(function(data){
+						//alert("unsubscribe success");					
+					},function(){
+						alert("unsubscribe error");
+					});
+			},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+			});
+	},
+
+	subscribeM : function(){
+		app.device.discoverServices(function(){
+			var service = app.device.getServiceByUUID("F000AA30-0451-4000-B000-000000000000")[0];
+			service.discoverCharacteristics(function(){
+				var character1 = service.getCharacteristicByUUID("F000AA31-0451-4000-B000-000000000000")[0];	
+				var character2 = service.getCharacteristicByUUID("F000AA32-0451-4000-B000-000000000000")[0];
+				character2.write("Hex","01",function(data){
+						//alert(JSON.stringify(data));
+					},function(){
+						alert("write error!");
+					});
+				character1.subscribe(function(data){
+					//alert("subscribe success");
+					document.getElementById("Accelerometer").innerHTML=JSON.stringify(data.value.getHexString());
+					});
+				},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+		});
+	},
+
+	unsubscribeM : function(){
+			app.device.discoverServices(function(){
+				var service = app.device.getServiceByUUID("F000AA30-0451-4000-B000-000000000000")[0];
+				service.discoverCharacteristics(function(){
+					var character = service.getCharacteristicByUUID("F000AA31-0451-4000-B000-000000000000")[0];					
+					character.unsubscribe(function(data){
+						//alert("unsubscribe success");					
+					},function(){
+						alert("unsubscribe error");
+					});
+			},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+			});
+	},
+
+	subscribeB : function(){
+		app.device.discoverServices(function(){
+			var service = app.device.getServiceByUUID("F000AA40-0451-4000-B000-000000000000")[0];
+			service.discoverCharacteristics(function(){
+				var character1 = service.getCharacteristicByUUID("F000AA41-0451-4000-B000-000000000000")[0];	
+				var character2 = service.getCharacteristicByUUID("F000AA42-0451-4000-B000-000000000000")[0];
+				character2.write("Hex","01",function(data){
+						//alert(JSON.stringify(data));
+					},function(){
+						alert("write error!");
+					});
+				character1.subscribe(function(data){
+					//alert("subscribe success");
+					document.getElementById("Accelerometer").innerHTML=JSON.stringify(data.value.getHexString());
+					});
+				},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+		});
+	},
+
+	unsubscribeB : function(){
+			app.device.discoverServices(function(){
+				var service = app.device.getServiceByUUID("F000AA40-0451-4000-B000-000000000000")[0];
+				service.discoverCharacteristics(function(){
+					var character = service.getCharacteristicByUUID("F000AA41-0451-4000-B000-000000000000")[0];					
+					character.unsubscribe(function(data){
+						//alert("unsubscribe success");					
+					},function(){
+						alert("unsubscribe error");
+					});
+			},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+			});
+	},
+
+	subscribeG : function(){
+		app.device.discoverServices(function(){
+			var service = app.device.getServiceByUUID("F000AA50-0451-4000-B000-000000000000")[0];
+			service.discoverCharacteristics(function(){
+				var character1 = service.getCharacteristicByUUID("F000AA51-0451-4000-B000-000000000000")[0];	
+				var character2 = service.getCharacteristicByUUID("F000AA52-0451-4000-B000-000000000000")[0];
+				character2.write("Hex","01",function(data){
+						//alert(JSON.stringify(data));
+					},function(){
+						alert("write error!");
+					});
+				character1.subscribe(function(data){
+					//alert("subscribe success");
+					document.getElementById("Accelerometer").innerHTML=JSON.stringify(data.value.getHexString());
+					});
+				},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+		});
+	},
+
+	unsubscribeG : function(){
+			app.device.discoverServices(function(){
+				var service = app.device.getServiceByUUID("F000AA50-0451-4000-B000-000000000000")[0];
+				service.discoverCharacteristics(function(){
+					var character = service.getCharacteristicByUUID("F000AA51-0451-4000-B000-000000000000")[0];					
+					character.unsubscribe(function(data){
+						//alert("unsubscribe success");					
+					},function(){
+						alert("unsubscribe error");
+					});
+			},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+			});
+	},
 };
+
+/*			app.device.discoverServices(function(){
+				//var serviceT = app.device.getServiceByUUID("F000AA00-0451-4000-B000-000000000000")[0];
+				//var serviceA = app.device.getServiceByUUID("F000AA10-0451-4000-B000-000000000000")[0];
+				//var serviceH = app.device.getServiceByUUID("F000AA20-0451-4000-B000-000000000000")[0];
+				//var serviceM = app.device.getServiceByUUID("F000AA30-0451-4000-B000-000000000000")[0];
+				//var serviceB = app.device.getServiceByUUID("F000AA40-0451-4000-B000-000000000000")[0];
+				//var serviceG = app.device.getServiceByUUID("F000AA50-0451-4000-B000-000000000000")[0];
+				var serviceK = app.device.getServiceByUUID("F000FFEO-0451-4000-B000-000000000000")[0];
+				serviceK.discoverCharacteristics(function(){
+					var characterK = serviceK.getCharacteristicByUUID("F000AAE1-0451-4000-B000-000000000000")[0];
+					characterK.read(function(data){
+						document.getElementById("KeyState").innerHTML=JSON.stringify(data.value.getHexString());
+					},function(){
+						alert("read error!");
+					});
+				},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+			});	
+*/		

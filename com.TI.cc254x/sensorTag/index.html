@@ -29,13 +29,26 @@
 
 			<div>
 				<a id="connect" href="javascript:void(0)" onclick="app.connect()" data-role="button" style="clear:both; text-align:center;">CONNECT!</a>
+				<a id="disconnect" href="javascript:void(0)" onclick="app.disconnect()" data-role="button" style="clear:both; text-align:center;">DISCONNECT!</a>
 				<a id="read" href="javascript:void(0)" onclick="app.read()" data-role="button" style="clear:both; text-align:center;">READ!</a>
 				
 				<ul>
-					<li><a><h3>Devices info:</h3></a>
+					<li><a><h3>Devices State:</h3></a>
+						<a><span id="Devices_state"style="color:blue;"><h3>please chick CONNECT</h3></span></a>
+					</li>
+				</ul>
+
+				<ul>
+					<li><a><h3>Devices Info:</h3></a>
 						<a><span id="Devices_info"style="color:blue;"><h3>NONE</h3></span></a>
 					</li>
 				</ul>
+
+				<ul>	
+					<li><a><h3>Key State:</h3></a>
+						<a><span id="KeyState"style="color:purple;"><h3>NONE</h3></span></a>
+					</li>
+				</ul>		
 			</div>
 		</div>		
 
@@ -44,38 +57,30 @@
 			<a id="subscribeT" href="javascript:void(0)" onclick="app.subscribeT()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Temperature!</a>
 			<a id="unsubscribeT" href="javascript:void(0)" onclick="app.unsubscribeT()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Temperature!</a>
 			<ul>
-			<li><a><h3>Temperature:</h3></a>
+			<li>
+				<a><h3>Temperature:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
 				<a><span id="Temperature"style="color:blue;"><h3>NONE</h3></span></a>
 			</li>
-			</ul>
-		</div>
-
-		<div >
-			<a id="subscribeA" href="javascript:void(0)" onclick="app.subscribeA()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Accelerometer!</a>
-			<a id="unsubscribeA" href="javascript:void(0)" onclick="app.unsubscribeA()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Accelerometer!</a>
-			<ul>
-			<li><a><h3>Accelerometer:</h3></a>
-				<a><span id="Accelerometer"style="color:green;"><h3>NONE</h3></span></a>
+			<li style="float:left;display:inline;">
+				<a><h3>  °C</h3></a>
 			</li>
-			</ul>	
+			</ul>
 		</div>
 
 		<div >
 			<a id="subscribeH" href="javascript:void(0)" onclick="app.subscribeH()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Humidity!</a>
 			<a id="unsubscribeH" href="javascript:void(0)" onclick="app.unsubscribeH()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Humidity!</a>
 			<ul>
-			<li><a><h3>Humidity:</h3></a>
+			<li>
+				<a><h3>Humidity:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
 				<a><span id="Humidity"style="color:green;"><h3>NONE</h3></span></a>
 			</li>
-			</ul>	
-		</div>
-
-		<div >
-			<a id="subscribeM" href="javascript:void(0)" onclick="app.subscribeM()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Magnetometer!</a>
-			<a id="unsubscribeM" href="javascript:void(0)" onclick="app.unsubscribeM()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Magnetometer!</a>
-			<ul>
-			<li><a><h3>Magnetometer:</h3></a>
-				<a><span id="Magnetometer"style="color:green;"><h3>NONE</h3></span></a>
+			<li style="float:left;display:inline;">
+				<a><h3>  % rH</h3></a>
 			</li>
 			</ul>	
 		</div>
@@ -85,7 +90,85 @@
 			<a id="unsubscribeB" href="javascript:void(0)" onclick="app.unsubscribeB()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Barometer!</a>
 			<ul>
 			<li><a><h3>Barometer:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
 				<a><span id="Barometer"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>  KPa</h3></a>
+			</li>
+			</ul>	
+		</div>
+
+		<div >
+			<a id="subscribeA" href="javascript:void(0)" onclick="app.subscribeA()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Accelerometer!</a>
+			<a id="unsubscribeA" href="javascript:void(0)" onclick="app.unsubscribeA()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Accelerometer!</a>
+			<ul>
+			<li>
+				<a><h3>Accelerometer:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>X:</h3></a>
+			</li >
+			<li style="float:left;display:inline;">
+				<a><span id="AccelerometerX"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>  G/</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>Y:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><span id="AccelerometerY"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>  G/</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>Z:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><span id="AccelerometerZ"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>  G</h3></a>
+			</li>
+			</ul>	
+		</div>
+
+		<div >
+			<a id="subscribeM" href="javascript:void(0)" onclick="app.subscribeM()" data-role="button" style="clear:both; text-align:center;">SUBSCRIBE Magnetometer!</a>
+			<a id="unsubscribeM" href="javascript:void(0)" onclick="app.unsubscribeM()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Magnetometer!</a>
+			<ul>
+			<li><a><h3>Magnetometer:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>X:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><span id="MagnetometerX"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>  uT/</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>Y:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><span id="MagnetometerY"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>  uT/</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>Z:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><span id="MagnetometerZ"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>  uT</h3></a>
 			</li>
 			</ul>	
 		</div>
@@ -95,16 +178,35 @@
 			<a id="unsubscribeG" href="javascript:void(0)" onclick="app.unsubscribeG()" data-role="button" style="clear:both; text-align:center;">UNSUBSCRIBE Gyroscope!</a>
 			<ul>
 			<li><a><h3>Gyroscope:</h3></a>
-				<a><span id="Gyroscope"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>X:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><span id="GyroscopeX"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>  °/S/</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>Y:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><span id="GyroscopeY"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>  °/S/</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>Z:</h3></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><span id="GyroscopeZ"style="color:green;"><h3>NONE</h3></span></a>
+			</li>
+			<li style="float:left;display:inline;">
+				<a><h3>  °/S</h3></a>
 			</li>
 			</ul>	
 		</div>			
-
-				<!--ul>	
-					<li><a><h3>Key state:</h3></a>
-						<a><span id="KeyState"style="color:purple;"><h3>NONE</h3></span></a>
-					</li>
-				</ul-->		
-
 	</body>
 </html>

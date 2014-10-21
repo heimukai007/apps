@@ -47,7 +47,6 @@ var app = {
 	
 	onBCReady : function(){
 		app.device = new BC.Device({deviceAddress:DEVICEADDRESS,type:DEVICETYPE});
-<<<<<<< HEAD
 		//app.device = new BC.Device({deviceAddress:"BC:6A:29:AB:64:AB",type:"BLE"});
 	},
 
@@ -159,62 +158,41 @@ var app = {
 					var temperature=app.str2val(temp,5,8)/128;
 					document.getElementById("Temperature").innerHTML=temperature.toFixed(2);
 					});
-=======
-		// app.serviceID = [{0:"1800",1:["2a00","2a01","2a02","2a03","2a04"]},
-		// 			 {0:"1801",1:["2a05"]},
-		// 			 {0:"180a",1:["2a23","2a24","2a25","2a26","2a27","2a28","2a29","2a2a","2a50"]},
-		// 			 {0:"aa00",1:["aa01","aa02"]},
-		// 			 {0:"aa10",1:["aa11","aa12","aa13"]},
-		// 			 {0:"aa20",1:["aa21","aa22"]},
-		// 			 {0:"aa30",1:["aa31","aa32","aa33"]},
-		// 			 {0:"aa40",1:["aa41","aa42","aa43"]},
-		// 			 {0:"aa50",1:["aa51","aa52"]},
-		// 			 {0:"ffeo",1:["ffe1"]},
-		// 			 {0:"aa60",1:["aa61","aa62"]},
-		// 			 {0:"ccc0",1:["ccc1","ccc2","ccc3"]},
-		// 			 {0:"ffc0",1:["ffc1","ffc2"]}];
-	},
-	
-	write : function(){
-		
-		//var device = new BC.Device({deviceAddress:"78:C5:E5:99:26:54",type:"BLE"});
-		app.device.connect(function(){
-			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID(address[0][0])[0];
-				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID(address[0][1][3])[0];
-					var text=document.getElementById("youWrite").value;
-					character.write("Hex",text,function(data){
-						alert(JSON.stringify(data));
-					},function(){
-						alert("write error!");
-					});
->>>>>>> parent of 324a170... Update for Sensor Tag:
 				},function(){
 					alert("discoverCharacteristics error!");
 				});
 			},function(){
 				alert("discoverServices error!");
-<<<<<<< HEAD
-=======
-			});
-		},function(){
-			alert("connnect error!");
->>>>>>> parent of 324a170... Update for Sensor Tag:
 		});
 	},
-	read : function(){
-		
-		app.device.connect(function(){
+
+	unsubscribeT : function(){
 			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID(address[3][0])[0];
+				var service = app.device.getServiceByUUID("F000AA00-0451-4000-B000-000000000000")[0];
 				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID(address[3][1][0])[0];
-					character.read(function(data){
-						alert(JSON.stringify(data));
-						document.getElementById("charactisticArea").innerHTML=JSON.stringify(data);
+					var character = service.getCharacteristicByUUID("F000AA01-0451-4000-B000-000000000000")[0];					
+					character.unsubscribe(function(data){
+						//alert("unsubscribe success");					
 					},function(){
-<<<<<<< HEAD
+						alert("unsubscribe error");
+					});
+			},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
+			});
+	},
+
+	subscribeA : function(){
+		app.device.discoverServices(function(){
+			var service = app.device.getServiceByUUID("F000AA10-0451-4000-B000-000000000000")[0];
+			service.discoverCharacteristics(function(){
+				var character1 = service.getCharacteristicByUUID("F000AA11-0451-4000-B000-000000000000")[0];	
+				var character2 = service.getCharacteristicByUUID("F000AA12-0451-4000-B000-000000000000")[0];
+				character2.write("Hex","01",function(data){
+						//alert(JSON.stringify(data));
+					},function(){
 						alert("write error!");
 					});
 				character1.subscribe(function(data){
@@ -229,17 +207,31 @@ var app = {
 					document.getElementById("AccelerometerX").innerHTML=aX.toFixed(2);
 					document.getElementById("AccelerometerY").innerHTML=aY.toFixed(2);
 					document.getElementById("AccelerometerZ").innerHTML=aZ.toFixed(2);
-=======
-						alert("read error!");
->>>>>>> parent of 324a170... Update for Sensor Tag:
 					});
 				},function(){
 					alert("discoverCharacteristics error!");
 				});
 			},function(){
 				alert("discoverServices error!");
+		});
+	},
+
+	unsubscribeA : function(){
+			app.device.discoverServices(function(){
+				var service = app.device.getServiceByUUID("F000AA10-0451-4000-B000-000000000000")[0];
+				service.discoverCharacteristics(function(){
+					var character = service.getCharacteristicByUUID("F000AA11-0451-4000-B000-000000000000")[0];					
+					character.unsubscribe(function(data){
+						//alert("unsubscribe success");					
+					},function(){
+						alert("unsubscribe error");
+					});
+			},function(){
+					alert("discoverCharacteristics error!");
+				});
+			},function(){
+				alert("discoverServices error!");
 			});
-<<<<<<< HEAD
 	},
 
 	subscribeH : function(){
@@ -315,21 +307,18 @@ var app = {
 				});
 			},function(){
 				alert("discoverServices error!");
-=======
-		},function(){
-			alert("connnect error!");
->>>>>>> parent of 324a170... Update for Sensor Tag:
 		});
 	},
-	subscribe : function(){
-		app.device.connect(function(){
+
+	unsubscribeM : function(){
 			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID(address[1][0])[0];
+				var service = app.device.getServiceByUUID("F000AA30-0451-4000-B000-000000000000")[0];
 				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID(address[1][1][0])[0];					
-					character.subscribe(function(data){
-						alert("subscribe success");
-						document.getElementById("subscribeArea").innerHTML=JSON.stringify(data);
+					var character = service.getCharacteristicByUUID("F000AA31-0451-4000-B000-000000000000")[0];					
+					character.unsubscribe(function(data){
+						//alert("unsubscribe success");					
+					},function(){
+						alert("unsubscribe error");
 					});
 			},function(){
 					alert("discoverCharacteristics error!");
@@ -337,7 +326,6 @@ var app = {
 			},function(){
 				alert("discoverServices error!");
 			});
-<<<<<<< HEAD
 	},
 
 	subscribeB : function(){
@@ -360,21 +348,16 @@ var app = {
 				});
 			},function(){
 				alert("discoverServices error!");
-=======
-		},function(){
-			alert("connnect error!");
->>>>>>> parent of 324a170... Update for Sensor Tag:
 		});
 	},
-	unsubscribe : function(){
-		
-		app.device.connect(function(){
+
+	unsubscribeB : function(){
 			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID(address[1][0])[0];
+				var service = app.device.getServiceByUUID("F000AA40-0451-4000-B000-000000000000")[0];
 				service.discoverCharacteristics(function(){
-					var character = service.getCharacteristicByUUID(address[1][1][0])[0];					
+					var character = service.getCharacteristicByUUID("F000AA41-0451-4000-B000-000000000000")[0];					
 					character.unsubscribe(function(data){
-						alert("unsubscribe success");					
+						//alert("unsubscribe success");					
 					},function(){
 						alert("unsubscribe error");
 					});
@@ -384,7 +367,6 @@ var app = {
 			},function(){
 				alert("discoverServices error!");
 			});
-<<<<<<< HEAD
 	},
 
 	subscribeG : function(){
@@ -439,10 +421,3 @@ var app = {
 };
 
 
-=======
-		},function(){
-			alert("connnect error!");
-		});
-	},
-};
->>>>>>> parent of 324a170... Update for Sensor Tag:

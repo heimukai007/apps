@@ -1,0 +1,183 @@
+<!doctype html>
+<html manifest="offline.manifest">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" type="text/css" href="css/clear.css">
+<link rel="stylesheet" type="text/css" href="css/service.css">
+<link rel="stylesheet" type="text/css" href="css/index_iphone.css">
+</head>
+<body>
+<div class="connectStatus" style="display:none;">connecting ...</div>
+<div style="display:block;" id="homeDiv">
+	<div class="body">
+		<div class="container">
+			<div class="proname">
+					<p>
+						<span id='proName'>
+							My Item
+						</span>
+						<img src="img/pen.png">
+					</p>
+					<span id="description" class="description">no connection</span>		
+			</div>
+		</div>
+		<div class="prophoto"> 
+			<div class="photoIcon">
+				<img src="img/takePhoto.png" id="photoWallet">
+			</div>
+			<div  class="photoImg  photoZindex">
+				<img src="">
+			</div>
+			<div class="photomask photoMaskZindex" id="photomask">
+				<span class="tip">Lost</span>
+			</div>
+		</div>
+		<div class="service">
+			<div class="serviceContainer">
+				<ul class="clearfix">
+					<li>
+						<img  id='getPosition' src="img/position.png">
+						<span>Position</span>
+					</li>
+					<li>
+						<img  id='callIt' src="img/call_it.png">
+						<span>Call It</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<ul class="navtip clearfix" >
+			<li>
+				<img src="img/take.png" id="take">
+				<span>Easy Take</span>
+			</li>
+			<li class="two" style="float:right">
+				<img src="img/antiLost_on.png" id="antiLost">
+				<span>Anti Lost On</span>
+			</li>
+			<li class="last" id="settings">
+				<img src="img/settings.png">
+				<span>Settings</span>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="photoLayer" style="display:none;" id="setPhotoDiv">
+	<div class="takePhoto">
+		<div class="photoNext" id="photoNext"><span>next</span></div>
+		<div class="tip">Step 1</div>
+		<div class="tipDescription">Set the photo of the item</div>
+		<div class="prophoto" id="photoborder"> 
+			<div class="photoIcon">
+				<img src="img/takePhoto.png" id="photoWallet">
+			</div>
+			<div  class="photoImg photoZindex" id="photoImg">
+				<img src="">
+			</div>
+		</div>
+	</div>
+	<div class="photoSkip" id="photoSkip">
+		skip
+	</div>
+</div>
+<div class="editItemName" style="display:none" id="setNameDiv">
+	<div class="takePhoto">
+		<div class="photoNext" id="lastNext">
+			<span>
+				next
+			</span>
+		</div>
+		<div class="tip">
+			Step 2
+		</div>
+		<div class="tipDescription">Set the name of the item</div>
+		<div class="itemName"><input type="text" id="itemName" placeholder="My Item"></div>
+	</div>	
+</div>
+
+
+<!--settings page start-->
+<div class="settings" style="border:0;">
+		<div class="back"><img src="img/narrow.png" class="goback"></div>
+		<div class="base proInfoSet">
+			<ul>
+				<li class="first firstLine" id="phopic">	
+					<span class="opt">Item Picture</span><span class="phopic default"><img src="img/takePhoto.png"></span><span class="phopic activePic"><img src="img/takePhoto.png"></span><img class="icon" src="img/narrow.png">
+				</li>
+				<li class="nds" id="name">
+					<span class="opt">Item Name</span><span class="name">My Item</span><img class="icon" src="img/narrow.png">
+				</li>
+			</ul>
+		</div>
+		<div class="base statusSet">
+			<ul>
+				<li class="nds firstLine">
+					<span class="opt">Anti Lost Alarm</span>
+					<span  class="openCloseBtn" item="defend">
+						<span class="open"></span>
+						<span class="close"></span>
+	            		<span id="ball" class="ball" flag="false"></span>
+					</span>					
+				</li>
+				<li class="nds safeSetting">	
+					<span class="opt">Leave Safe Area Alarm</span>
+					<span  class="openCloseBtn" item="sda">
+						<span class="open"></span>
+						<span class="close"></span>
+	            		<span id="ball" class="ball"></span>
+					</span>
+					<div class="saferangeSetting">
+						<input type="range" min="-100" max="-1"  id="range">
+						<span class="rangeText">-80</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="editNameLayer" id="editNameLayer">
+		<div class="editTab">
+			<div class="tip">Tap and edit Item Name</div>
+			<div class="productInput">
+				<input type="text" id="item_name" placeholder="My Item">
+			</div>
+			<div class="confirm_cancel">
+				<span class="cancel">cancel</span>
+				<span class="confirm">confirm</span>
+			</div>
+		</div>
+	</div>
+<!--
+ page end-->	
+<script type="text/javascript" src="framework/org.underscorejs.underscore/underscore.js"></script>
+<script type="text/javascript" src="framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
+<script type="text/javascript" src="framework/org.bcsphere/bc.js"></script>
+<script type="text/javascript" src="framework/org.bluetooth.service/immediate_alert.js"></script>
+<script type="text/javascript" src="framework/org.bluetooth.service/tx_power.js"></script>
+<script type="text/javascript" src="framework/org.bluetooth.service/link_loss.js"></script>
+<script type="text/javascript" src="framework/org.bluetooth.profile/proximity.js"></script>
+<script type="text/javascript" src="framework/org.bluetooth.profile/find_me.js"></script>
+<script type="text/javascript" src="framework/org.apache.cordova.dialogs/notification.js"></script>
+<script type="text/javascript" src="framework/org.apache.cordova.geolocation/www/Coordinates.js"></script>
+<script type="text/javascript" src="framework/org.apache.cordova.geolocation/www/Position.js"></script>
+<script type="text/javascript" src="framework/org.apache.cordova.geolocation/www/PositionError.js"></script>
+<script type="text/javascript" src="framework/org.apache.cordova.geolocation/www/geolocation.js"></script>
+<script type="text/javascript" src="framework/org.apache.cordova.camera/www/CameraPopoverHandle.js"></script>
+<script type="text/javascript" src="framework/org.apache.cordova.camera/www/CameraConstants.js"></script>
+<script type="text/javascript" src="framework/org.apache.cordova.camera/www/Camera.js"></script>
+<script type="text/javascript" src="framework/org.apache.cordova.camera/www/CameraPopoverOptions.js"></script>
+<script type="text/javascript" src="framework/org.bcsphere.telephony/www/telephony.js"></script>
+<script type="text/javascript"src="framework/org.bcsphere.camera/www/camera.js"></script>
+<script src="js/jquery-1.7.1.min.js"></script>
+<script src="js/index.js"></script>
+<script>
+	$(function(){
+		app.initialize();
+	})
+</script>
+</body>
+</html>

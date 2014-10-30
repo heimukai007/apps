@@ -55,6 +55,7 @@ var app = {
 	},
 
 	onNotify:function(buffer){
+		console.log("111111111111111111");
 		var temp=buffer.value.getHexString();					
 		var humidity=app.str2val(temp,5,8);
 		var humidity_new=125*humidity/65536-6;

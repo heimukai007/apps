@@ -22,7 +22,7 @@
 		
 		myScroll = new iScroll('wrapper', {
 			useTransition: true,
-			topOffset: pullDownOffset,
+			topOffset: 0,
 			onRefresh: function () {
 				if (pullDownEl.className.match('loading')) {
 					pullDownEl.className = '';
@@ -47,7 +47,7 @@
 					if(count%2==1){
 						pullDownEl.querySelector('.pullDownLabel').innerHTML = ' Pull down to disconnect...';
 					}
-					this.minScrollY = -pullDownOffset;
+					this.minScrollY = 0//-pullDownOffset;
 				} 
 			},
 			onScrollEnd: function () {

@@ -22,11 +22,11 @@ var app = {
 	connect : function(){
 		app.device.connect(function(){
 			app.device.discoverServices(function(){
-				var service = app.device.getServiceByUUID("F000AA00-0451-4000-B000-000000000000")[0];
+				var service = app.device.getServiceByUUID("F000AA50-0451-4000-B000-000000000000")[0];
 				service.discoverCharacteristics(function(){
-					var character1 = service.getCharacteristicByUUID("F000AA01-0451-4000-B000-000000000000")[0];
-					var character2 = service.getCharacteristicByUUID("F000AA02-0451-4000-B000-000000000000")[0];
-					character2.write("Hex","01",function(data){
+					var character1 = service.getCharacteristicByUUID("F000AA51-0451-4000-B000-000000000000")[0];
+					var character2 = service.getCharacteristicByUUID("F000AA52-0451-4000-B000-000000000000")[0];
+					character2.write("Hex","07",function(data){
 					},function(){
 						alert("write error!");
 					});
@@ -44,9 +44,9 @@ var app = {
 
 	disconnect : function(){
 		app.device.disconnect(function(){
-			var curValue=document.getElementById("curValue");
-			curValue.innerHTML="0";
 			app.option.series[0].data[0].value = 0;
+			app.option.series[1].data[0].value = 0;
+			app.option.series[2].data[0].value = 0;
 			app.myChart.setOption(app.option, true);
 		},function(){
 			console.log("disconnect error");
@@ -56,11 +56,15 @@ var app = {
 	onNotify:function(buffer){
 		console.log("Notify");
 		var temp=buffer.value.getHexString();
-		var temperature=app.str2val(temp,5,8)/128;					
-		var curValue=document.getElementById("curValue");
-		curValue.innerHTML=temperature.toFixed(3);
-
-		app.option.series[0].data[0].value = temperature.toString().slice(0,6);
+		var gX=app.str2val(temp,1,4);
+		var gY=app.str2val(temp,5,8);
+		var gZ=app.str2val(temp,9,12);
+		gX= 1*gX*500/65536;
+		gY= 1*gY*500/65536;
+		gZ= 1*gZ*500/65536;	
+		app.option.series[0].data[0].value = gX.toFixed(2);
+        app.option.series[1].data[0].value = gY.toFixed(2);
+        app.option.series[2].data[0].value = gZ.toFixed(2);
 		app.myChart.setOption(app.option, true);
 	},
 
@@ -111,29 +115,47 @@ var app = {
   					
             function (ec) {
                 app.myChart = ec.init(document.getElementById('main'));
-                app.option = {
-				    tooltip : {
-				        formatter: "{a} <br/>{b} : {c}"
-				    },
-				    toolbox: {
-				        show : false,
-				        feature : {
-				            mark : {show: true},
-				            restore : {show: true},
-				            saveAsImage : {show: true}
-				        }
-				    },
-				    series : [
-				        {
-				            name:'Current Temperature',
-				            type:'gauge',
-                            min:0,
-                            max:100,
-				            detail : {formatter:'{value}'},
-				            data:[{value: 0, name: '°C'}]
-				        }
-				    ]
-				};
+               	app.option = {
+                    tooltip: {
+                        show: true
+                    },
+                    legend: {
+                        data:['x','y','z']
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : ["gyroscope"]
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value',
+                            name : '°/s'
+                        }
+                    ],
+                   series : [
+                        {
+                            name:"x",
+                            type:"bar",
+                            itemStyle : { normal: {label : {show: true, position: 'top'}}},
+                            data:[{value: 0}]
+
+                        },
+                        {
+                            name:"y",
+                            type:"bar",
+                            itemStyle : { normal: {label : {show: true, position: 'top'}}},
+                            data:[{value: 0}]
+                        },
+                        {
+                            name:"z",
+                            type:"bar",
+                            itemStyle : { normal: {label : {show: true, position: 'top'}}},
+                            data:[{value: 0}]
+                        },
+                    ] 
+                };
 				app.myChart.setOption(app.option, true);
         });
 

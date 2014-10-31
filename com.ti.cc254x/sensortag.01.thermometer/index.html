@@ -2,7 +2,6 @@
 <html manifest="offline.manifest">
 	<head>
 		<meta charset="utf-8">
-		
 		<title></title>
 		<link rel="stylesheet" href="css/jquery.mobile.min.css" />
 		<link rel="stylesheet" type="text/css" href="css/bcstyle.css">
@@ -11,29 +10,33 @@
 		<script type="text/javascript" src="http://www.gatt.io/framework/org.underscorejs.underscore/underscore.js"></script>
 		<script type="text/javascript" src="http://www.gatt.io/framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
 		<script type="text/javascript" src="http://www.gatt.io/framework/org.bcsphere/bc.js"></script>
+		<script src="js/esl.js"></script>
 		<script type="text/javascript" charset="utf-8" src="js/index.js"></script>
-		
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script>
-			$(function(){
-				app.initialize();
-			});
-			
-		</script>
 	</head>
+
 	<body>
-	<div id="bodyAll">
-		<div id="title">
-				<h1>HMSoft</h1>
-		</div>
-		<div>
-			<input type="text" id="youWrite" value="">
-			<a id="write" href="javascript:void(0)" onclick="app.write()" data-role="button" style="clear:both; text-align:center;">Write!</a>
-		</div>
-		<div>
-		<a id="write" href="javascript:void(0)" onclick="app.read()" data-role="button" style="clear:both; text-align:center;">check the writing!</a>
-		<div id="charactisticArea"></div>
-		</div>
+		<div id="bodyALL">
+			<ul>
+				<li style="display:block;">
+					<div id="main" style="height:350px;width:250px;clear:both; text-align:left;"></div>
+				</li>
+				<a id="connect" href="javascript:void(0)" onclick="app.connect()" data-role="button" style="clear:both; text-align:center;">connect</a>
+				<a id="disconnect" href="javascript:void(0)" onclick="app.disconnect()" data-role="button" style="clear:both; text-align:center;">disconnect</a>
+				<a style="clear:both; text-align:center;"><span id="Devices_state"style="color:blue;">-</span></a>
+			</ul>
 		</div>
 	</body>
+	<script>
+		window.onload=function(){
+			require.config({
+	            paths:{ 
+	                'echarts' : 'js/echarts',
+	                'echarts/chart/bar' : 'js/echarts'
+	            }
+	        });
+	 	app.initialize();
+		}
+
+	</script>
 </html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" type="text/css" href="css/clear.css">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.underscorejs.underscore/underscore.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.bcsphere.bluetooth/bluetoothapi.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.bcsphere/bc.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/LocalFileSystem.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/File.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/Flags.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/fileSystemPaths.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/FileUploadOptions.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/FileUploadResult.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/fileSystems.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/FileError.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/Metadata.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/ProgressEvent.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/Entry.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/DirectoryEntry.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/FileSystem.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/fileSystems-roots.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/DirectoryReader.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/FileWriter.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/FileEntry.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/FileReader.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/requestFileSystem.js"></script>
+<script type="text/javascript" src="http://www.gatt.io/framework/org.apache.cordova.file/www/resolveLocalFileSystemURI.js"></script>
+
+<script type="text/javascript" src="js/index.js"></script>
+<script>	
+	$(function(){
+		app.initialize();
+	});
+	</script>
+</head>
+<body>
+<div class="body">
+	<div class="tab">
+		<div class="tabContent selected">
+			<div class="inputInfo">
+				<textarea id="showData"></textarea>
+			</div>
+			<div class="btn">
+				<div class="radioBtn">
+					<span class="control">
+						<input type="radio" name="charType" id="ASCII1" checked="checked"><i class="active"></i><label for="ASCII">ASCII</label>
+					</span>
+					<span class="control">
+						<input type="radio" name="charType" id="Hex1"><i class="addLeft"></i><label for="HEX">HEX</label>
+					</span>
+				</div>
+				<div class="sendBtn">
+					<div class="send" onclick="app.clear()">clear</div>
+				</div>	
+				<div class="sendBtn">
+					<div class="send" onclick="app.unsubscribe()">stop</div>
+				</div>
+				<div class="sendBtn">
+					<div class="send" onclick="app.subscribe()">start</div>
+				</div>
+			</div>
+		</div>
+		<div class="tabContent ">
+			<div class="inputInfo">
+				<textarea id="youWrite"></textarea>
+			</div>
+			<div class="btn">
+				<div class="radioBtn">
+					<span class="control">
+						<input type="radio" name="charType" id="ASCII2" checked="checked"><i class="active"></i><label for="ASCII">ASCII</label>
+					</span>
+					<span class="control">
+						<input type="radio" name="charType" id="Hex2"><i class="addLeft"></i><label for="HEX">HEX</label>
+					</span>
+				</div>
+				<div class="selectBtn">
+					<span class="control">
+						<input type="checkbox" name="charType" style="display:none"id="cycleSend"><i></i><span>cyclic sending</span>
+					</span>
+					<span class="sendInterval">
+						<span> interval</span>
+						<input type="text" class="default" id="interval">
+						<span>ms</span>
+					</span>
+				</div>
+				<div class="sendBtn">
+					<div class="send" onclick="app.send()">send</div>
+				</div>
+				<div class="sendBtn">
+					<div class="send" onclick="app.stop()">stop cyclic sending</div>
+				</div>		
+			</div>
+		</div>
+	</div>
+	<ul class="tabOption clearfix">
+            <li class="selectedLi">RX</li>
+            <li class="defaultLi">TX</li>
+        </ul>
+</div>
+</body>
+</html> 
+<script type="text/javascript">
+
+$(".tabOption>li").click(function(){
+	$(this).removeClass("defaultLi").addClass("selectedLi").siblings().removeClass("selectedLi").addClass("defaultLi");
+	var nIndex=$(this).index();
+	$(".tab>.tabContent").removeClass("selected").eq(nIndex).addClass("selected");
+})
+$(".radioBtn>.control").click(function(){
+	$(this).siblings().children("input").attr("checked","");
+	$(this).children("input").attr("checked","checked");
+	$(this).siblings().children("i").removeClass("active")
+	$(this).children("i").addClass("active");
+})
+$(".selectBtn>.control").toggle(function(){
+	$(this).children("input").attr("checked","checked");
+//	alert($(this).children("input"));
+	$(this).children("i").css({"background":"url('img/checked.png')","background-size":"100% 100%"});
+//	alert($(this).children("i"));
+	$(this).siblings(".sendInterval").addClass("active");
+},function(){
+	$(this).children("input").attr("checked","");
+	$(this).children("i").css({"background":"url('img/check.png')","background-size":"100% 100%"});
+	$(this).siblings(".sendInterval").removeClass("active");
+})
+</script>
